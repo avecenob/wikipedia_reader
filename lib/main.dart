@@ -80,9 +80,39 @@ class ArticleView extends StatelessWidget {
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, child) {
-          return const Center(child: Text('UI will update here'));
+          return switch ((
+            viewModel.loading,
+            viewModel.summary,
+            viewModel.errorMessage,
+          )) {
+            (true, _, _) => CircularProgressIndicator(),
+            (false, _, String message) => Center(child: Text(message)),
+            (false, null, null) => Center(
+              child: Text('Unknown error has occured.'),
+            ),
+            (false, Summary summary, null) => ArticlePage(
+              summary: summary,
+              nextArticleCallback: viewModel.getRandomArticleSummary
+            ),
+          };
         },
       ),
     );
+  }
+}
+
+class ArticlePage extends StatelessWidget {
+  const ArticlePage({
+    super.key,
+    required this.summary,
+    required this.nextArticleCallback,
+  });
+
+  final Summary summary;
+  final VoidCallback nextArticleCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text('Article content will be displayed here.'));
   }
 }
