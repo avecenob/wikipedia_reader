@@ -113,6 +113,12 @@ class ArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Article content will be displayed here.'));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Text('Article content will be displayed here'),
+        ],
+      )
+    );
   }
 }
