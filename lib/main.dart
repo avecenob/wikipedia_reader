@@ -77,9 +77,12 @@ class ArticleView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Wikipedia Flutter'),
       ),
-      body: const Center(
-        child: Text('UI will update here'),
-      )
+      body: ListenableBuilder(
+        listenable: viewModel,
+        builder: (context, child) {
+          return const Center(child: Text('UI will update here'));
+        },
+      ),
     );
   }
 }
