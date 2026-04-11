@@ -19,14 +19,7 @@ class MainApp extends StatelessWidget {
     final viewModel = ArticleViewModel(ArticleModel());
     
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Wikipedia Flutter'),
-        ),
-        body: Center(
-          child: Text('Check console for article data.'),
-        ),
-      ),
+      home: ArticleView(),
     );
   }
 }
@@ -73,5 +66,23 @@ class ArticleViewModel extends ChangeNotifier {
 
     loading = false;
     notifyListeners();
+  }
+}
+
+class ArticleView extends StatelessWidget {
+  ArticleView({super.key});
+
+  final viewModel = ArticleViewModel(ArticleModel());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Wikipedia Flutter'),
+      ),
+      body: const Center(
+        child: Text('UI will update here'),
+      )
+    );
   }
 }
