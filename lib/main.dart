@@ -15,9 +15,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ArticleView(),
-    );
+    return MaterialApp(home: ArticleView());
   }
 }
 
@@ -74,9 +72,7 @@ class ArticleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wikipedia Flutter'),
-      ),
+      appBar: AppBar(title: const Text('Wikipedia Flutter')),
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, child) {
@@ -92,7 +88,7 @@ class ArticleView extends StatelessWidget {
             ),
             (false, Summary summary, null) => ArticlePage(
               summary: summary,
-              nextArticleCallback: viewModel.getRandomArticleSummary
+              nextArticleCallback: viewModel.getRandomArticleSummary,
             ),
           };
         },
@@ -116,9 +112,44 @@ class ArticlePage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Text('Article content will be displayed here'),
+          ArticleWidget(summary: summary),
+          ElevatedButton(
+            onPressed: nextArticleCallback,
+            child: Text('Next random article'),
+          ),
         ],
-      )
+      ),
+    );
+  }
+}
+
+class ArticleWidget extends StatelessWidget {
+  const ArticleWidget({super.key, required this.summary});
+
+  final Summary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        spacing: 10.0,
+        children: [
+          if (summary.hasImage) Image.network(summary.originalImage!.source),
+          Text(
+            summary.titles.normalized,
+            overflow: TextOverflow.ellipsis,
+            style: TextTheme.of(context).displaySmall,
+          ),
+          if (summary.description != null)
+            Text(
+              summary.description!,
+              overflow: TextOverflow.ellipsis,
+              style: TextTheme.of(context).bodySmall,
+            ),
+          Text(summary.extract),
+        ],
+      ),
     );
   }
 }
